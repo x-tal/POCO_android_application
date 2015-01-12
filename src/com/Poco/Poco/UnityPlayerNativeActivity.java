@@ -1,10 +1,12 @@
 package com.Poco.Poco;
 
 import com.unity3d.player.*;
+
 import android.app.NativeActivity;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +17,11 @@ public class UnityPlayerNativeActivity extends NativeActivity
 {
 	protected UnityPlayer mUnityPlayer;		// don't change the name of this variable; referenced from native code
 
+	public void callAndroid(String strMsg)
+	{
+		UnityPlayer.UnitySendMessage("AndroidPluginManager", "setLabel", "Startup Time : "+strMsg);
+	}
+	
 	// Setup activity layout
 	@Override protected void onCreate (Bundle savedInstanceState)
 	{
