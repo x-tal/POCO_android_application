@@ -11,7 +11,7 @@
 *.class
 
 # Generated files
-bin/
+/bin/
 gen/
 
 # Gradle files
@@ -34,7 +34,7 @@ proguard/
 *.pydevproject
 .metadata
 .gradle
-bin/
+/bin/
 tmp/
 *.tmp
 *.bak
