@@ -1,10 +1,19 @@
 package com.Poco.Poco;
 
+import java.io.IOException;
+
 import com.unity3d.player.*;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NativeActivity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -20,8 +29,18 @@ import android.view.WindowManager;
 
 public class UnityPlayerNativeActivity extends NativeActivity implements Callback
 {
+	private static final int REQUEST_ENABLE_BT = 2;
 	private Handler handler = null;
 	private AlertDialog mDialog = null;
+	private BluetoothService btService = null;
+	private AcceptThread btThread = null;
+	public Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.sendMessage(msg);
+		}
+	};
+	
 	protected UnityPlayer mUnityPlayer;		// don't change the name of this variable; referenced from native code
 	
 	private AlertDialog createDialog() {
@@ -54,6 +73,16 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		UnityPlayer.UnitySendMessage("AndroidPluginManager", "setLabel", "Startup Time : "+strMsg);
 	}
 	
+	public void connectAndroid(String strMsg) {
+		if(this.btService.getDeviceState() == false) {
+			Log.d("OK", "Service Fail and Enable");
+			this.btService.enableBluetooth();
+		} else {
+			Log.d("OK", "Click button and success.");
+			btThread.start();
+		}
+	}
+	
 	// Setup activity layout
 	@Override protected void onCreate (Bundle savedInstanceState)
 	{
@@ -73,8 +102,15 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		mUnityPlayer.requestFocus();
 		
 		this.handler = new Handler(this);
+		
+		if(this.btService == null) {
+			Log.d("OK", "Create Bluetooth Service");
+			this.btService = new BluetoothService(this, this.mHandler);
+		}
+		
+		this.btThread = new AcceptThread(this.btService.pocoDevice());
 	}
-
+	
 	// Quit Unity
 	@Override protected void onDestroy ()
 	{
@@ -134,5 +170,16 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(resultCode) {
+		case REQUEST_ENABLE_BT:
+			if(resultCode == Activity.RESULT_OK) {
+				Log.d("OK", "OK");
+			}
+			break;
+		}
 	}
 }
