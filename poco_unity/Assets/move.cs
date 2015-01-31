@@ -10,7 +10,7 @@ public class move : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float after_sin = Mathf.Sin (Time.realtimeSinceStartup);
-		transform.localPosition = new Vector2 (after_sin * 2, 0);
+		// float after_sin = Mathf.Sin (Time.realtimeSinceStartup);
+		// transform.localPosition = new Vector2 (after_sin * 2, 0);
 	}
 }

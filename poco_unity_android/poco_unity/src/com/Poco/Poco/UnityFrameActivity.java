@@ -78,7 +78,9 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	// I think it is bad method.
 	public void onClick(View v) {
 		switch((Integer)v.getTag()){
-		case 0: Log.d("OK", "Let's Party"); break;
+		case 0: 
+			// UnityPlayerNativeActivity._instance.
+			break;
 		case 1: 
 			Log.d("OK", "목표 자세.");
 			break;
