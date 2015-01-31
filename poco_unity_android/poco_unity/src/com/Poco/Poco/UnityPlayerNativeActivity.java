@@ -66,8 +66,9 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 	
 	public void callAndroid(String strMsg)
 	{
-		UnityPlayer.UnitySendMessage("AndroidPluginManager", "setLabel", "Startup Time : "+strMsg);
+		UnityPlayer.UnitySendMessage("carlObject", "toggleSwing", "Yeaaaa");
 	}
+	
 	
 	public void connectAndroid(String strMsg) {
 		if(btService.getDeviceState() == false) {

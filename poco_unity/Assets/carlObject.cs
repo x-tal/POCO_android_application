@@ -3,11 +3,14 @@ using System.Collections;
 
 public class carlObject : MonoBehaviour {
 
+	public static carlObject _instance;
+
 	bool isSit = false;
 	bool isSwing = false;
-
+	
 	// Use this for initialization
 	void Start () {
+		_instance = this;
 		this.isSit = false;
 
 		GameObject red_light = GameObject.Find ("Directional light");
@@ -63,6 +66,10 @@ public class carlObject : MonoBehaviour {
 		else {
 			this.isSwing = false;
 		}
+	}
+
+	public void toggleSwing (string str) {
+		this.toggleSwing ();
 	}
 
 	public void toggleSit () {

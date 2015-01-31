@@ -32,6 +32,8 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	
 	private AlertDialog wrongMessageDialog = null;
 	private AlertDialog startupDialog = null;
+	private AlertDialog planDialog = null;
+	private AlertDialog postureDialog = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,13 +81,15 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch((Integer)v.getTag()){
 		case 0: 
-			// UnityPlayerNativeActivity._instance.
+			UnityPlayer.UnitySendMessage("AndroidPluginManager", "setSwing", "Yeaaaa");
 			break;
-		case 1: 
-			Log.d("OK", "목표 자세.");
+		case 1:
+			this.planDialog = this.createPlanDialog();
+			this.planDialog.show();
 			break;
 		case 2: 
-			Log.d("OK", "오차 범우.");
+			this.postureDialog = this.createPostureDialog();
+			this.postureDialog.show();
 			break;
 		case 3: 
 			this.startupDialog = this.createStarupDialog();
@@ -104,17 +108,6 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		ab.setMessage("message");
 		ab.setCancelable(true);
 		
-//		ab.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				if (wrongMessageDialog != null) {
-//					wrongMessageDialog.dismiss();
-//				}
-//				
-//			}
-//		});
-		
 		return ab.create();
 	}
 	
@@ -129,6 +122,57 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		al.add("팔");
 		al.add("골반");
 		al.add("다리");
+		
+		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
+		
+		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				Log.d("OK", "안알랴쥼");
+			}
+		});
+		
+		return ab.create();
+	}
+	
+	private AlertDialog createPlanDialog() {
+		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		ab.setTitle("목표 자세 정도.");
+		// ArrayAdapter<String> la = new ArrayAdapter<String>();
+		
+		ArrayList<String> al = new ArrayList<String>();
+		al.add("빡시게!");
+		al.add("넉넉하게");
+		al.add("사람답게");
+		al.add("원치않아여");
+		
+		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
+		
+		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				Log.d("OK", "안알랴쥼");
+			}
+		});
+		
+		return ab.create();
+	}
+	
+	private AlertDialog createPostureDialog() {
+		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		ab.setTitle("무슨 자세를 원하세요??");
+		// ArrayAdapter<String> la = new ArrayAdapter<String>();
+		
+		ArrayList<String> al = new ArrayList<String>();
+		al.add("요가");
+		al.add("헬스");
+		al.add("정상자세");
+		al.add("국민체조");
+		al.add("안알랴쥼");
 		
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
 		

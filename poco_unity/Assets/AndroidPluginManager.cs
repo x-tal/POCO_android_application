@@ -53,6 +53,10 @@ public class AndroidPluginManager : MonoBehaviour {
 		return this.data;
 	}
 
+	public void setSwing(string strMsg) {
+		carlObject._instance.toggleSwing ();
+	}
+
 	public void setLabel(string strMsg){
 		label_str = strMsg;
 		label_str = "<size=32>" + label_str + "</size>";
