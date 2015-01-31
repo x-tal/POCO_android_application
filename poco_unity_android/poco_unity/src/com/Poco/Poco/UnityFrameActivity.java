@@ -51,10 +51,10 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams (LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
 		LinearLayout ll2 = new LinearLayout(this);
 		ll2.setOrientation(LinearLayout.VERTICAL);
-		ll2.setWeightSum(5);
+		ll2.setWeightSum(4);
 		
-		Button btn[] = new Button[5];
-		for(int i = 0; i < 5; i++) {
+		Button btn[] = new Button[4];
+		for(int i = 0; i < 4; i++) {
 			btn[i] = new Button(this);
 			String text;
 			switch(i) {
