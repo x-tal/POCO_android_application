@@ -136,6 +136,7 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 //		getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
 		setContentView(R.layout.main);
+		setTitle("POCO:Wearable posture fix solution");
 		
 		this.mTabhost = this.getTabHost();
 		

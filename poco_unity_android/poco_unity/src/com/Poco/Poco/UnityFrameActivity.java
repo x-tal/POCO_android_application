@@ -3,6 +3,7 @@ package com.Poco.Poco;
 import com.unity3d.player.UnityPlayer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
@@ -23,30 +24,30 @@ public class UnityFrameActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//setTheme(android.R.style.Theme_NoTitleBar_Fullscreen);
 		mUnityPlayer = new UnityPlayer(this);
-//		if (mUnityPlayer.getSettings ().getBoolean ("hide_status_bar", true))
-//			getWindow ().setFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//			                       WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//		FrameLayout layout = (FrameLayout) findViewById(R.id.tab_1_frame);
-//		LayoutParams lp = new LayoutParams (LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-//		layout.addView(mUnityPlayer, 0, lp);
 		
 		LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(LinearLayout.HORIZONTAL);
 		ll.setWeightSum(10);
-//		LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) ll.getLayoutParams();
-//		llp.gravity = Gravity.BOTTOM;
 		
 		LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams (LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 9);
 		ll.addView(mUnityPlayer, 0, lp1);
 		
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams (LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1);
-		Button b1 = new Button(this);
-		b1.setText("Button");
 		
-		ll.addView(b1, 0, lp2);
+		LinearLayout ll2 = new LinearLayout(this);
+		ll2.setOrientation(LinearLayout.VERTICAL);
+		
+		Button b1 = new Button(this);
+		Button b2 = new Button(this);
+		
+		b1.setText("Button1");
+		b2.setText("Button1");
+		
+		ll2.addView(b1);
+		ll2.addView(b2);
+		
+		ll.addView(ll2, 0, lp2);
 		
 		this.setContentView(ll);
 	}
