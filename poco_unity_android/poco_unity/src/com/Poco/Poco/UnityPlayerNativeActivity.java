@@ -3,11 +3,14 @@ package com.Poco.Poco;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 import com.unity3d.player.*;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NativeActivity;
+import android.app.TabActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -27,12 +30,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 
-public class UnityPlayerNativeActivity extends NativeActivity implements Callback
+public class UnityPlayerNativeActivity extends TabActivity implements Callback
 {
 	private static final int REQUEST_ENABLE_BT = 2;
+	private TabHost mTabhost;
 	private Handler handler = null;
 	private AlertDialog wrongMessageDialog = null;
 	private AlertDialog startupDialog = null;
@@ -45,7 +53,7 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		}
 	};
 	
-	protected UnityPlayer mUnityPlayer;		// don't change the name of this variable; referenced from native code
+	
 	
 	private AlertDialog createWrongDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
@@ -122,81 +130,38 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 	// Setup activity layout
 	@Override protected void onCreate (Bundle savedInstanceState)
 	{
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 
-		getWindow().takeSurface(null);
-		getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
+//		getWindow().takeSurface(null);
+//		getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
-		setTheme(android.R.style.Theme_NoTitleBar_Fullscreen);
-		mUnityPlayer = new UnityPlayer(this);
-		if (mUnityPlayer.getSettings ().getBoolean ("hide_status_bar", true))
-			getWindow ().setFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN,
-			                       WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		setContentView(mUnityPlayer);
-		mUnityPlayer.requestFocus();
+		setContentView(R.layout.main);
+		
+		this.mTabhost = this.getTabHost();
+		
+		TabSpec tabSpec1 = this.mTabhost.newTabSpec("Unity Frame Tab");
+		tabSpec1.setIndicator("나의 자세");
+		tabSpec1.setContent(new Intent(this, UnityFrameActivity.class));
+		this.mTabhost.addTab(tabSpec1);
+		
+		TabSpec tabSpec2 = this.mTabhost.newTabSpec("Unity Frame Tab2");
+		tabSpec2.setIndicator("Tab2");
+		tabSpec2.setContent(new Intent(this, OtherActivity.class));
+		this.mTabhost.addTab(tabSpec2);
+		
+		this.mTabhost.setCurrentTab(0);
 		
 		this.handler = new Handler(this);
 		
 		// Create Bluetooth service
-		if(this.btService == null) {
-			Log.d("OK", "Create Bluetooth Service");
-			this.btService = new BluetoothService(this, this.mHandler);
-		}
-		
-		this.btThread = new AcceptThread(this.btService.pocoDevice());
+//		if(this.btService == null) {
+//			Log.d("OK", "Create Bluetooth Service");
+//			this.btService = new BluetoothService(this, this.mHandler);
+//		}
+//		
+//		this.btThread = new AcceptThread(this.btService.pocoDevice());
 	}
 	
-	// Quit Unity
-	@Override protected void onDestroy ()
-	{
-		mUnityPlayer.quit();
-		super.onDestroy();
-	}
-
-	// Pause Unity
-	@Override protected void onPause()
-	{
-		super.onPause();
-		mUnityPlayer.pause();
-	}
-
-	// Resume Unity
-	@Override protected void onResume()
-	{
-		super.onResume();
-		mUnityPlayer.resume();
-	}
-
-	// This ensures the layout will be correct.
-	@Override public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-		mUnityPlayer.configurationChanged(newConfig);
-	}
-
-	// Notify Unity of the focus change.
-	@Override public void onWindowFocusChanged(boolean hasFocus)
-	{
-		super.onWindowFocusChanged(hasFocus);
-		mUnityPlayer.windowFocusChanged(hasFocus);
-	}
-
-	// For some reason the multiple keyevent type is not supported by the ndk.
-	// Force event injection by overriding dispatchKeyEvent().
-	@Override public boolean dispatchKeyEvent(KeyEvent event)
-	{
-		if (event.getAction() == KeyEvent.ACTION_MULTIPLE)
-			return mUnityPlayer.injectEvent(event);
-		return super.dispatchKeyEvent(event);
-	}
-
-	// Pass any events not handled by (unfocused) views straight to UnityPlayer
-	@Override public boolean onKeyUp(int keyCode, KeyEvent event)     { return mUnityPlayer.injectEvent(event); }
-	@Override public boolean onKeyDown(int keyCode, KeyEvent event)   { return mUnityPlayer.injectEvent(event); }
-	@Override public boolean onTouchEvent(MotionEvent event)          { return mUnityPlayer.injectEvent(event); }
-	/*API12*/ public boolean onGenericMotionEvent(MotionEvent event)  { return mUnityPlayer.injectEvent(event); }
 
 	@Override
 	public boolean handleMessage(Message msg) {
