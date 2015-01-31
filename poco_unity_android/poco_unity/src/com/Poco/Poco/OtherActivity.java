@@ -13,12 +13,6 @@ public class OtherActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		LinearLayout ll = new LinearLayout(this);
-		
-		TextView label = new TextView(this);
-		label.setText("Tab 2 임.");
-		ll.addView(label);
-		
-		this.setContentView(ll);
+		this.setContentView(R.layout.otherlayout_frame);
 	}
 }
