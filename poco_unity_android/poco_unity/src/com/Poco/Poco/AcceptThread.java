@@ -43,7 +43,6 @@ public class AcceptThread extends Thread {
 		try {
 			this.mmSocket.connect();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Log.d("OK", "AcceptThread connect success!");
@@ -59,8 +58,16 @@ public class AcceptThread extends Thread {
 					UnityPlayer.UnitySendMessage("AndroidPluginManager", "receivedData", message);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				// Bluetooth data 못받아 올 시의 임시 처리.
 				e.printStackTrace();
+				try {
+//					if (this.mmSocket.isConnected() == true) {
+//						this.mmSocket.close();
+//					}
+					this.mmSocket.connect();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
