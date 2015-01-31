@@ -42,65 +42,17 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 	private static final int REQUEST_ENABLE_BT = 2;
 	private TabHost mTabhost;
 	private Handler handler = null;
-	private AlertDialog wrongMessageDialog = null;
-	private AlertDialog startupDialog = null;
 	private BluetoothService btService = null;
 	private AcceptThread btThread = null;
-	public Handler mHandler = new Handler() {
+
+	public static UnityPlayerNativeActivity _instance;
+	public static Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			super.sendMessage(msg);
 		}
 	};
-	
-	
-	
-	private AlertDialog createWrongDialog() {
-		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("title");
-		ab.setMessage("message");
-		ab.setCancelable(false);
-		
-		ab.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (wrongMessageDialog != null) {
-					wrongMessageDialog.dismiss();
-				}
-				
-			}
-		});
-		
-		return ab.create();
-	}
-	
-	@SuppressLint("NewApi")
-	private AlertDialog createStarupDialog() {
-		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("잘못된 부위를 알랴주세요.");
-		// ArrayAdapter<String> la = new ArrayAdapter<String>();
-		
-		ArrayList<String> al = new ArrayList<String>();
-		al.add("목");
-		al.add("가슴");
-		al.add("팔");
-		al.add("골반");
-		al.add("다리");
-		
-		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
-		
-		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				Log.d("OK", "안알랴쥼");
-			}
-		});
-		
-		return ab.create();
-	}
+
 	
 	public void callPopup(String strMsg){
 		Log.d("Unity_POCO", strMsg);
@@ -118,9 +70,9 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 	}
 	
 	public void connectAndroid(String strMsg) {
-		if(this.btService.getDeviceState() == false) {
+		if(btService.getDeviceState() == false) {
 			Log.d("OK", "Service Fail and Enable");
-			this.btService.enableBluetooth();
+			btService.enableBluetooth();
 		} else {
 			Log.d("OK", "Click button and success.");
 			btThread.start();
@@ -146,7 +98,7 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 		this.mTabhost.addTab(tabSpec1);
 		
 		TabSpec tabSpec2 = this.mTabhost.newTabSpec("Unity Frame Tab2");
-		tabSpec2.setIndicator("Tab2");
+		tabSpec2.setIndicator("Hot line");
 		tabSpec2.setContent(new Intent(this, OtherActivity.class));
 		this.mTabhost.addTab(tabSpec2);
 		
@@ -155,25 +107,30 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 		this.handler = new Handler(this);
 		
 		// Create Bluetooth service
-//		if(this.btService == null) {
-//			Log.d("OK", "Create Bluetooth Service");
-//			this.btService = new BluetoothService(this, this.mHandler);
-//		}
-//		
-//		this.btThread = new AcceptThread(this.btService.pocoDevice());
+		if(this.btService == null) {
+			Log.d("OK", "Create Bluetooth Service");
+			this.btService = new BluetoothService(this, this.mHandler);
+		}
+		
+		this.btThread = new AcceptThread(this.btService.pocoDevice());
+		
+		// 임시적으로 만든 인스턴스. 수정 필요! <--- 진짜로 똥임!
+		_instance = this;
 	}
 	
 
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
-		if (msg.what == 0) {
-			this.wrongMessageDialog = this.createWrongDialog();
-			this.wrongMessageDialog.show();
-		} else if (msg.what == 1) {
-			this.startupDialog = this.createStarupDialog();
-			this.startupDialog.show();
-		}
+//		if (msg.what == 0) {
+//			this.wrongMessageDialog = this.createWrongDialog();
+//			this.wrongMessageDialog.show();
+//		} else if (msg.what == 1) {
+//			this.startupDialog = this.createStarupDialog();
+//			this.startupDialog.show();
+//		} else if (msg.what == 2) {
+//			this.connectAndroid("in android");
+//		}
 		
 		return false;
 	}
