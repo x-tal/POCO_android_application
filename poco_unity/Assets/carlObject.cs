@@ -7,6 +7,7 @@ public class carlObject : MonoBehaviour {
 
 	bool isSit = false;
 	bool isSwing = false;
+	int wrong_range = 15;
 	
 	// Use this for initialization
 	void Start () {
@@ -49,7 +50,7 @@ public class carlObject : MonoBehaviour {
 	}
 
 	private bool isWrongAngle (GameObject go) {
-		if ((go.transform.localEulerAngles.x > 15 && go.transform.localEulerAngles.x < 355) || (go.transform.localEulerAngles.y > 15 && go.transform.localEulerAngles.y < 355) || (go.transform.localEulerAngles.z > 15 && go.transform.localEulerAngles.z < 355)) {
+		if ((go.transform.localEulerAngles.x > this.wrong_range && go.transform.localEulerAngles.x < 360-this.wrong_range) || (go.transform.localEulerAngles.y > this.wrong_range && go.transform.localEulerAngles.y < 360-this.wrong_range) || (go.transform.localEulerAngles.z > this.wrong_range && go.transform.localEulerAngles.z < 360-this.wrong_range)) {
 			return true;
 		} else {
 			return false;
@@ -79,6 +80,10 @@ public class carlObject : MonoBehaviour {
 		else {
 			this.SitUp ();
 		}
+	}
+
+	public void setWrongRange (int wrong_range) {
+		this.wrong_range = wrong_range;
 	}
 
 	private void SitDown () {

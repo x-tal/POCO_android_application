@@ -58,11 +58,11 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			btn[i] = new Button(this);
 			String text;
 			switch(i) {
-			case 0: text = "레츠 파티"; break;
-			case 1: text = "오차 범위 설정"; break;
-			case 2: text = "목표 자세 설정"; break;
-			case 3: text = "부위 설정"; break;
-			case 4: text = "디바이스 연결"; break;
+			//case 0: text = "레츠 파티"; break;
+			case 0: text = "오차 범위 설정"; break;
+			case 1: text = "목표 자세 설정"; break;
+			case 2: text = "부위 설정"; break;
+			case 3: text = "디바이스 연결"; break;
 			default : text = "뭐여 이건"; break;
 			}
 			btn[i].setText(text);
@@ -80,22 +80,22 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	// I think it is bad method.
 	public void onClick(View v) {
 		switch((Integer)v.getTag()){
-		case 0: 
+		case -1: 
 			UnityPlayer.UnitySendMessage("AndroidPluginManager", "setSwing", "Yeaaaa");
 			break;
-		case 1:
+		case 0:
 			this.planDialog = this.createPlanDialog();
 			this.planDialog.show();
 			break;
-		case 2: 
+		case 1: 
 			this.postureDialog = this.createPostureDialog();
 			this.postureDialog.show();
 			break;
-		case 3: 
+		case 2: 
 			this.startupDialog = this.createStarupDialog();
 			this.startupDialog.show();
 			break;
-		case 4: 
+		case 3: 
 			UnityPlayerNativeActivity._instance.connectAndroid("이건 똥이야 이히히히");
 			break;
 		default: break;
@@ -155,7 +155,8 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				Log.d("OK", "안알랴쥼");
+				Log.d("OK", Integer.toString(which));
+				UnityPlayer.UnitySendMessage("AndroidPluginManager", "setWrongRange", Integer.toString(which));
 			}
 		});
 		

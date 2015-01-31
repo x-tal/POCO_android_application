@@ -57,6 +57,18 @@ public class AndroidPluginManager : MonoBehaviour {
 		carlObject._instance.toggleSwing ();
 	}
 
+	public void setWrongRange(string strMsg) {
+		if (strMsg.Equals ("0")) {
+			carlObject._instance.setWrongRange(5);
+		} else if (strMsg.Equals ("1")) {
+			carlObject._instance.setWrongRange(10);
+		} else if (strMsg.Equals ("2")) {
+			carlObject._instance.setWrongRange(15);
+		} else if (strMsg.Equals ("3")) {
+			carlObject._instance.setWrongRange(20);
+		}
+	}
+
 	public void setLabel(string strMsg){
 		label_str = strMsg;
 		label_str = "<size=32>" + label_str + "</size>";
