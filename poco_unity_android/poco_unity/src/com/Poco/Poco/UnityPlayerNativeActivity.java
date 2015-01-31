@@ -1,9 +1,10 @@
 package com.Poco.Poco;
 
 import java.io.IOException;
-
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import com.unity3d.player.*;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NativeActivity;
@@ -26,12 +27,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 
 public class UnityPlayerNativeActivity extends NativeActivity implements Callback
 {
 	private static final int REQUEST_ENABLE_BT = 2;
 	private Handler handler = null;
-	private AlertDialog mDialog = null;
+	private AlertDialog wrongMessageDialog = null;
+	private AlertDialog startupDialog = null;
 	private BluetoothService btService = null;
 	private AcceptThread btThread = null;
 	public Handler mHandler = new Handler() {
@@ -43,7 +47,7 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 	
 	protected UnityPlayer mUnityPlayer;		// don't change the name of this variable; referenced from native code
 	
-	private AlertDialog createDialog() {
+	private AlertDialog createWrongDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
 		ab.setTitle("title");
 		ab.setMessage("message");
@@ -53,10 +57,37 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				if (mDialog != null) {
-					mDialog.dismiss();
+				if (wrongMessageDialog != null) {
+					wrongMessageDialog.dismiss();
 				}
 				
+			}
+		});
+		
+		return ab.create();
+	}
+	
+	@SuppressLint("NewApi")
+	private AlertDialog createStarupDialog() {
+		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		ab.setTitle("잘못된 부위를 알랴주세요.");
+		// ArrayAdapter<String> la = new ArrayAdapter<String>();
+		
+		ArrayList<String> al = new ArrayList<String>();
+		al.add("목");
+		al.add("가슴");
+		al.add("팔");
+		al.add("골반");
+		al.add("다리");
+		
+		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
+		
+		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				Log.d("OK", "안알랴쥼");
 			}
 		});
 		
@@ -66,6 +97,11 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 	public void callPopup(String strMsg){
 		Log.d("Unity_POCO", strMsg);
 		this.handler.sendEmptyMessage(0);
+	}
+	
+	public void callDialog(String strMsg){
+		Log.d("OK", "callDialog()");
+		this.handler.sendEmptyMessage(1);
 	}
 	
 	public void callAndroid(String strMsg)
@@ -90,9 +126,9 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		super.onCreate(savedInstanceState);
 
 		getWindow().takeSurface(null);
-		setTheme(android.R.style.Theme_NoTitleBar_Fullscreen);
 		getWindow().setFormat(PixelFormat.RGBX_8888); // <--- This makes xperia play happy
 
+		setTheme(android.R.style.Theme_NoTitleBar_Fullscreen);
 		mUnityPlayer = new UnityPlayer(this);
 		if (mUnityPlayer.getSettings ().getBoolean ("hide_status_bar", true))
 			getWindow ().setFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -103,6 +139,7 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 		
 		this.handler = new Handler(this);
 		
+		// Create Bluetooth service
 		if(this.btService == null) {
 			Log.d("OK", "Create Bluetooth Service");
 			this.btService = new BluetoothService(this, this.mHandler);
@@ -165,8 +202,11 @@ public class UnityPlayerNativeActivity extends NativeActivity implements Callbac
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
 		if (msg.what == 0) {
-			this.mDialog = this.createDialog();
-			this.mDialog.show();
+			this.wrongMessageDialog = this.createWrongDialog();
+			this.wrongMessageDialog.show();
+		} else if (msg.what == 1) {
+			this.startupDialog = this.createStarupDialog();
+			this.startupDialog.show();
 		}
 		
 		return false;

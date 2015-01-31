@@ -37,6 +37,10 @@ public class AndroidPluginManager : MonoBehaviour {
 		curActivity.Call ("callAndroid", strMsg);
 	}
 
+	public void CallDialog(){
+		curActivity.Call ("callDialog", "POCO");
+	}
+
 	public void ConnectBluetooth() {
 		curActivity.Call ("connectAndroid", "Hi");
 	}
