@@ -9,6 +9,10 @@ public class carlObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.isSit = false;
+
+		GameObject red_light = GameObject.Find ("Directional light");
+		Light red = red_light.GetComponent<Light> ();
+		red.intensity = 0;
 	}
 	
 	// Update is called once per frame
@@ -18,15 +22,34 @@ public class carlObject : MonoBehaviour {
 			carl_spine.transform.localEulerAngles = new Vector3 (60 * Mathf.Sin (Time.realtimeSinceStartup), 1, 60 * Mathf.Cos (Time.realtimeSinceStartup));
 		// carl_spine.transform.Rotate (60*Mathf.Sin(Time.realtimeSinceStartup), 0, Mathf.Cos(Time.realtimeSinceStartup));
 		} else {
-			string data = AndroidPluginManager.GetInstance().getData();
-			string[] result = data.Split(' ');
-
-			float resultZ = System.Convert.ToSingle(result[0]);
-			float resultX = System.Convert.ToSingle(result[1]) * -1;
-			float resultY = System.Convert.ToSingle(result[2]);
-
 			GameObject carl_spine = GameObject.Find ("Spine2");
-			carl_spine.transform.localEulerAngles = new Vector3 (resultX, resultY, resultZ);
+
+			string data = AndroidPluginManager.GetInstance().getData();
+			if (data != null) {
+				string[] result = data.Split(' ');
+
+				float resultZ = System.Convert.ToSingle(result[0]);
+				float resultX = System.Convert.ToSingle(result[1]) * -1;
+				float resultY = System.Convert.ToSingle(result[2]);
+
+				carl_spine.transform.localEulerAngles = new Vector3 (resultX, resultY, resultZ);
+			}
+	
+			GameObject red_light = GameObject.Find ("Directional light");
+			Light red = red_light.GetComponent<Light> ();
+			if (isWrongAngle(carl_spine)) {
+				red.intensity = 10;
+			} else {
+				red.intensity = 0;
+			}
+		}
+	}
+
+	private bool isWrongAngle (GameObject go) {
+		if ((go.transform.localEulerAngles.x > 15 && go.transform.localEulerAngles.x < 355) || (go.transform.localEulerAngles.y > 15 && go.transform.localEulerAngles.y < 355) || (go.transform.localEulerAngles.z > 15 && go.transform.localEulerAngles.z < 355)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
