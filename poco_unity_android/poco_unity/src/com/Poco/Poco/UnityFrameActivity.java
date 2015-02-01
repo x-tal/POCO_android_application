@@ -61,8 +61,8 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			//case 0: text = "레츠 파티"; break;
 			case 0: text = "오차 범위 설정"; break;
 			case 1: text = "목표 자세 설정"; break;
-			case 2: text = "부위 설정"; break;
-			case 3: text = "디바이스 연결"; break;
+			case 2: text = "POCO 사용 위치"; break;
+			case 3: text = "POCO 연결"; break;
 			default : text = "뭐여 이건"; break;
 			}
 			btn[i].setText(text);
@@ -113,33 +113,19 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	
 	private AlertDialog createStarupDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("잘못된 부위를 알랴주세요.");
-		// ArrayAdapter<String> la = new ArrayAdapter<String>();
+		String array[] = {"목", "가슴", "팔", "골반", "다리"};
 		
-		ArrayList<String> al = new ArrayList<String>();
-		al.add("목");
-		al.add("가슴");
-		al.add("팔");
-		al.add("골반");
-		al.add("다리");
-		
-		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
-		
-		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				Log.d("OK", "안알랴쥼");
-			}
-		});
-		
+		ab.setTitle("POCO 사용위치를 선택해주세요.");	
+		ab.setMultiChoiceItems(array, null, null);
+		ab.setPositiveButton("OK", null);
+		ab.setNegativeButton("Cancel", null);
+				
 		return ab.create();
 	}
 	
 	private AlertDialog createPlanDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("목표 자세 정도.");
+		ab.setTitle("목표 자세 정도를 선택해주세요.");
 		// ArrayAdapter<String> la = new ArrayAdapter<String>();
 		
 		ArrayList<String> al = new ArrayList<String>();
@@ -149,7 +135,7 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		al.add("원치않아여");
 		
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
-		
+	
 		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -159,6 +145,7 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 				UnityPlayer.UnitySendMessage("AndroidPluginManager", "setWrongRange", Integer.toString(which));
 			}
 		});
+		ab.setNegativeButton("Cancel", null);
 		
 		return ab.create();
 	}
@@ -177,14 +164,8 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
 		
-		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				Log.d("OK", "안알랴쥼");
-			}
-		});
+		ab.setAdapter(aa, null);
+		ab.setNegativeButton("Cancel", null);
 		
 		return ab.create();
 	}
