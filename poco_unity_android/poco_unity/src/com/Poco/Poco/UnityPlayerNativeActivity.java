@@ -103,6 +103,11 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 		tabSpec2.setContent(new Intent(this, OtherActivity.class));
 		this.mTabhost.addTab(tabSpec2);
 		
+		TabSpec tabSpec3 = this.mTabhost.newTabSpec("Unity Frame Tab3");
+		tabSpec3.setIndicator("관리자");
+		tabSpec3.setContent(new Intent(this, AdminActivity.class));
+		this.mTabhost.addTab(tabSpec3);
+		
 		this.mTabhost.setCurrentTab(0);
 		
 		this.handler = new Handler(this);

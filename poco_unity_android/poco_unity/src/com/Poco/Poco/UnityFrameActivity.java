@@ -32,7 +32,6 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 	
 	private AlertDialog wrongMessageDialog = null;
 	private AlertDialog startupDialog = null;
-	private AlertDialog planDialog = null;
 	private AlertDialog postureDialog = null;
 	
 	@Override
@@ -51,18 +50,18 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams (LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
 		LinearLayout ll2 = new LinearLayout(this);
 		ll2.setOrientation(LinearLayout.VERTICAL);
-		ll2.setWeightSum(4);
+		ll2.setWeightSum(3);
 		
-		Button btn[] = new Button[4];
-		for(int i = 0; i < 4; i++) {
+		Button btn[] = new Button[3];
+		for(int i = 0; i < 3; i++) {
 			btn[i] = new Button(this);
 			String text;
 			switch(i) {
 			//case 0: text = "레츠 파티"; break;
-			case 0: text = "오차 범위 설정"; break;
-			case 1: text = "목표 자세 설정"; break;
-			case 2: text = "POCO 사용 위치"; break;
-			case 3: text = "POCO 연결"; break;
+			//case 1: text = "오차 범위 설정"; break;
+			case 0: text = "목표 자세 설정"; break;
+			case 1: text = "POCO 사용 위치"; break;
+			case 2: text = "POCO 연결"; break;
 			default : text = "뭐여 이건"; break;
 			}
 			btn[i].setText(text);
@@ -84,8 +83,6 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			UnityPlayer.UnitySendMessage("AndroidPluginManager", "setSwing", "Yeaaaa");
 			break;
 		case 0:
-			this.planDialog = this.createPlanDialog();
-			this.planDialog.show();
 			break;
 		case 1: 
 			this.postureDialog = this.createPostureDialog();
@@ -123,32 +120,7 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		return ab.create();
 	}
 	
-	private AlertDialog createPlanDialog() {
-		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("목표 자세 정도를 선택해주세요.");
-		// ArrayAdapter<String> la = new ArrayAdapter<String>();
-		
-		ArrayList<String> al = new ArrayList<String>();
-		al.add("빡시게!");
-		al.add("넉넉하게");
-		al.add("사람답게");
-		al.add("원치않아여");
-		
-		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
 	
-		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				Log.d("OK", Integer.toString(which));
-				UnityPlayer.UnitySendMessage("AndroidPluginManager", "setWrongRange", Integer.toString(which));
-			}
-		});
-		ab.setNegativeButton("Cancel", null);
-		
-		return ab.create();
-	}
 	
 	private AlertDialog createPostureDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
