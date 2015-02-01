@@ -83,17 +83,18 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			UnityPlayer.UnitySendMessage("AndroidPluginManager", "setSwing", "Yeaaaa");
 			break;
 		case 0:
-			break;
-		case 1: 
 			this.postureDialog = this.createPostureDialog();
 			this.postureDialog.show();
 			break;
-		case 2: 
+		case 1: 
 			this.startupDialog = this.createStarupDialog();
 			this.startupDialog.show();
 			break;
+		case 2: 
+			// pass
+			break;
 		case 3: 
-			UnityPlayerNativeActivity._instance.connectAndroid("이건 똥이야 이히히히");
+			// pass
 			break;
 		default: break;
 		}
