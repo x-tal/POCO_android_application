@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Handler.Callback;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,15 +27,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-public class UnityFrameActivity extends Activity implements OnClickListener {
+public class UnityFrameActivity extends Activity implements OnClickListener, Callback  {
 	
 	protected UnityPlayer mUnityPlayer;		// don't change the name of this variable; referenced from native code
 	
-	private AlertDialog wrongMessageDialog = null;
+	// private AlertDialog wrongMessageDialog = null;
 	private AlertDialog startupDialog = null;
 	private AlertDialog postureDialog = null;
+	private AlertDialog messageDialog = null;
 	
-	@Override
+	public Handler mHandler = null;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -73,7 +76,10 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		
 		ll.addView(ll2, 0, lp2);
 		
+		this.mHandler = new Handler(this);
+		
 		this.setContentView(ll);
+		this.mUnityPlayer.requestFocus();
 	}
 	
 	// I think it is bad method.
@@ -100,15 +106,6 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	private AlertDialog createWrongDialog() {
-		AlertDialog.Builder ab = new AlertDialog.Builder(this);
-		ab.setTitle("title");
-		ab.setMessage("message");
-		ab.setCancelable(true);
-		
-		return ab.create();
-	}
-	
 	private AlertDialog createStarupDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
 		String array[] = {"목", "가슴", "팔", "골반", "다리"};
@@ -117,11 +114,71 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		ab.setMultiChoiceItems(array, null, null);
 		ab.setPositiveButton("OK", null);
 		ab.setNegativeButton("Cancel", null);
-				
+		
 		return ab.create();
 	}
 	
+	@Override
+	public boolean handleMessage(Message msg) {
+		if (msg.what == 0) {
+			this.startMessageDialog((String)msg.obj);
+		}
+		
+		return false;
+	}
 	
+	public void callMessageDialog(String strMsg){
+		Message msg = new Message();
+		msg.obj = strMsg;
+		msg.what = 0;
+		this.mHandler.sendMessage(msg);
+	}
+	
+	private void startMessageDialog(String strMsg){
+		Log.d("OK", strMsg);
+		String data[] = strMsg.split(",");
+		
+		this.messageDialog = this.createMessageDialog(data);
+		this.messageDialog.show();
+	}
+
+	private AlertDialog createMessageDialog(String data[]) {
+		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		ab.setTitle("문제점");
+		
+		Float float_data[] = new Float[3];
+		float_data[0] = Float.valueOf(data[0]);
+		float_data[1] = Float.valueOf(data[1]);
+		float_data[2] = Float.valueOf(data[2]);
+		
+		String xAxisDef, yAxisDef, zAxisDef;
+		if (float_data[0]-180.0f < 0) {
+			xAxisDef = "앞";
+		} else {
+			xAxisDef = "뒤";
+			float_data[0] -= 360.0f;
+			float_data[0] *= -1;
+		}
+		if (float_data[1]-180.0f < 0) {
+			yAxisDef = "우";			
+		} else {
+			yAxisDef = "좌";
+			float_data[1] -= 360.0f;
+			float_data[1] *= -1;
+		}
+		if (float_data[2]-180.0f < 0) {
+			zAxisDef = "왼쪽";
+		} else {
+			zAxisDef = "오른쪽";
+			float_data[2] -= 360.0f;
+			float_data[2] *= -1;
+		}
+		
+		ab.setMessage(xAxisDef+"쪽으로 "+float_data[0].toString()+"도, "+yAxisDef+"측으로 "+float_data[1].toString()+"도, "+zAxisDef+"로 "+float_data[2].toString()+"도 틀어졌습니다.");
+		ab.setPositiveButton("OK", null);
+		
+		return ab.create();
+	}
 	
 	private AlertDialog createPostureDialog() {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);

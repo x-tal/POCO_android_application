@@ -5,7 +5,7 @@ public class AndroidPluginManager : MonoBehaviour {
 
 	static AndroidPluginManager _instance;
 	private AndroidJavaObject curActivity;
-	private AndroidJavaClass firstPluginJc;
+	private AndroidJavaObject unityFrameActivity;
 
 	public string original_label_str;
 	public string label_str;
@@ -27,10 +27,14 @@ public class AndroidPluginManager : MonoBehaviour {
 	void Awake(){
 		AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
 		curActivity = jc.GetStatic<AndroidJavaObject> ("currentActivity");
+
+//		AndroidJavaClass jc2 = new AndroidJavaClass ("com.Poco.Poco.UnityFrameActivity");
+//		this.unityFrameActivity = jc2.GetStatic<AndroidJavaObject> ("getInstance");
 	}
 
-	public void CallPopup(){
-		curActivity.Call ("callPopup", "It works!!!");
+	public void CallMessageDialog(float m_x, float m_y, float m_z){
+		string message = m_x.ToString () + "," + m_y.ToString () + "," + m_z.ToString ();
+		curActivity.Call ("callMessageDialog", message);
 	}
 
 	public void CallAndroid(string strMsg){

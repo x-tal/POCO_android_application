@@ -44,6 +44,8 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 	private Handler handler = null;
 	private BluetoothService btService = null;
 	private AcceptThread btThread = null;
+	
+	// private AlertDialog messageDialog = null;
 
 	public static UnityPlayerNativeActivity _instance;
 	public static Handler mHandler = new Handler() {
@@ -54,10 +56,22 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 	};
 
 	
-	public void callPopup(String strMsg){
-		Log.d("Unity_POCO", strMsg);
-		this.handler.sendEmptyMessage(0);
-	}
+//	public void callMessageDialog(String strMsg){
+//		Log.d("OK", strMsg);
+//		String data[] = strMsg.split(",");
+//		
+//		this.messageDialog = this.createMessageDialog(data);
+//		this.messageDialog.show();
+//	}
+//
+//	private AlertDialog createMessageDialog(String data[]) {
+//		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+//		ab.setTitle("문제점");
+//		ab.setMessage("x: "+data[0]+",y: "+data[1]+", z:"+data[2]);
+//		ab.setPositiveButton("OK", null);
+//		
+//		return ab.create();
+//	}
 	
 	public void callDialog(String strMsg){
 		Log.d("OK", "callDialog()");
