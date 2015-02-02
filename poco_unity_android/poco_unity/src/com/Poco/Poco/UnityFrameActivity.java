@@ -91,7 +91,7 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			this.startupDialog.show();
 			break;
 		case 2: 
-			// pass
+			UnityPlayerNativeActivity._instance.connectAndroid("POCO Connect");
 			break;
 		case 3: 
 			// pass
