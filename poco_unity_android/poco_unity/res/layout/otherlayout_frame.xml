@@ -15,14 +15,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dr.Koo"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textSize="64dp" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아주대학교 웨어러블 전문의"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textSize="48dp" />
     </LinearLayout>
 
     <FrameLayout
@@ -34,7 +34,8 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="> 현재 메시지를 보낼 수 없습니다." />
+            android:text="> 현재 바른 자세에서 조금 벗어났습니다. 정확한 자세를 유지하세요."
+            android:textSize="36dp" />
 
     </FrameLayout>
 
@@ -49,7 +50,8 @@
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:ems="10" 
+        android:ems="24" 
+        android:textSize="48dp"
         android:layout_weight="0.85">
 
   		</EditText>
