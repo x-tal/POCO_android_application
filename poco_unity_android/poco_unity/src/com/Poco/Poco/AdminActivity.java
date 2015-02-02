@@ -58,10 +58,10 @@ public class AdminActivity extends Activity implements OnClickListener {
 		ab.setTitle("목표 자세 정도를 선택해주세요.");
 		
 		ArrayList<String> al = new ArrayList<String>();
-		al.add("20°");
-		al.add("15°");
-		al.add("10°");
 		al.add("5°");
+		al.add("10°");
+		al.add("15°");
+		al.add("20°");
 		
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
 	
@@ -69,7 +69,6 @@ public class AdminActivity extends Activity implements OnClickListener {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				Log.d("OK", Integer.toString(which));
 				UnityPlayer.UnitySendMessage("AndroidPluginManager", "setWrongRange", Integer.toString(which));
 			}

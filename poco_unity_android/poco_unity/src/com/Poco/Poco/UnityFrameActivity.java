@@ -91,7 +91,7 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 			this.startupDialog.show();
 			break;
 		case 2: 
-			// pass
+			UnityPlayerNativeActivity._instance.connectAndroid("POCO Connect");
 			break;
 		case 3: 
 			// pass
@@ -137,7 +137,13 @@ public class UnityFrameActivity extends Activity implements OnClickListener {
 		
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, al);
 		
-		ab.setAdapter(aa, null);
+		ab.setAdapter(aa, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Log.d("OK", Integer.toString(which));
+			}
+		});
 		ab.setNegativeButton("Cancel", null);
 		
 		return ab.create();

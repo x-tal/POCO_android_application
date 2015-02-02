@@ -127,17 +127,6 @@ public class UnityPlayerNativeActivity extends TabActivity implements Callback
 
 	@Override
 	public boolean handleMessage(Message msg) {
-		// TODO Auto-generated method stub
-//		if (msg.what == 0) {
-//			this.wrongMessageDialog = this.createWrongDialog();
-//			this.wrongMessageDialog.show();
-//		} else if (msg.what == 1) {
-//			this.startupDialog = this.createStarupDialog();
-//			this.startupDialog.show();
-//		} else if (msg.what == 2) {
-//			this.connectAndroid("in android");
-//		}
-		
 		return false;
 	}
 	
