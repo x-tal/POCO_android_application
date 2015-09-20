@@ -1,9 +1,8 @@
-# A wearable posture fix solution via POCO
-### CATUION : YOU CAN FEEL DISGUSTING WHEN READ THIS CODE.
-- Please be careful.
-- Will be refactoring. ㅜㅜ
+# A wearable posture fix solution aka POCO
+## Information
+- This is a prototype that is wearable posture fix solution called POCO
 
-## About this repo
+## directory
 - poco_unity : Unity3d project directory.
 - poco_unity_android : Android application based unity3d android exported project.
 
